@@ -4,6 +4,7 @@ public class Vehicle {
 
     private String vehicleId;
     private String description;
+    private Integer inStockCount;
 
     public String getVehicleId() {
         return this.vehicleId;
@@ -19,5 +20,13 @@ public class Vehicle {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getInStockCount() {
+        return inStockCount;
+    }
+
+    public void setInStockCount(Integer inStockCount) {
+        this.inStockCount = inStockCount;
     }
 }

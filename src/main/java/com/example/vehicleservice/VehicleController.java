@@ -3,11 +3,14 @@ package com.example.vehicleservice;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,13 @@ public class VehicleController {
 
     private static final String DB_ERR = "Error connecting to database";
     private static final String GATEWAY_ERR = "Error connecting to gateway";
+
+    private final RestTemplate restTemplate;
+
+    @Autowired
+    public VehicleController(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @GetMapping("/vehicles")
     public ResponseEntity<Object> getVehicles() {
@@ -67,6 +77,17 @@ public class VehicleController {
         return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }
 
+    private Integer getInStockCount(String vehicleId) {
+        final String inventoryServiceUrl = "http://localhost:8083/checkout";
+
+        final String response = (String) restTemplate
+                .exchange(inventoryServiceUrl, HttpMethod.GET, null, String.class)
+                .getBody();
+
+        return 0;  
+
+    }
+
     private List<Vehicle> getVehicleInfo() {
         List<Vehicle> vehicles = new ArrayList<>();
 
@@ -90,6 +111,10 @@ public class VehicleController {
         vehicles.add(vehicle2);
         vehicles.add(vehicle3);
         vehicles.add(vehicle4);
+
+        for (Vehicle vehicle : vehicles) {
+            vehicle.setInStockCount(getInStockCount(vehicle.getVehicleId()));
+        }
 
         return vehicles;
     }
