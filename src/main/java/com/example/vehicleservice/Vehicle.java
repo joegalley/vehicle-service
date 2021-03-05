@@ -5,6 +5,7 @@ public class Vehicle {
     private String vehicleId;
     private String description;
     private Integer inStockCount;
+    private Integer minCreditScore;
 
     public String getVehicleId() {
         return this.vehicleId;
@@ -28,5 +29,13 @@ public class Vehicle {
 
     public void setInStockCount(Integer inStockCount) {
         this.inStockCount = inStockCount;
+    }
+
+    public Integer getMinCreditScore() {
+        return minCreditScore;
+    }
+
+    public void setMinCreditScore(Integer minCreditScore) {
+        this.minCreditScore = minCreditScore;
     }
 }
